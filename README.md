@@ -4,5 +4,5 @@
 
 [cursey](https://github.com/cursey) - KV parser.
 
-##Dependencies
+## Dependencies
 glm, freetype, imgui, utfcpp, nlohmann, PEGTL, safetyhook, zydis
