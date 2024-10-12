@@ -1,4 +1,1 @@
-*
-!tas/
-!CMakeLists.txt
-!.gitignore
+build

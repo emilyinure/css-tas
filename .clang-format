@@ -1,0 +1,22 @@
+---
+BasedOnStyle: LLVM
+ColumnLimit: 96
+---
+Language: Cpp
+AccessModifierOffset: -2
+SortIncludes: Never
+IndentCaseLabels: true
+NamespaceIndentation: All
+DerivePointerAlignment: false
+PointerAlignment: Left
+UseCRLF: false
+UseTab: Never
+AllowShortBlocksOnASingleLine: Empty
+AlignConsecutiveMacros: AcrossComments
+AlignConsecutiveAssignments: AcrossComments
+AlignConsecutiveDeclarations: AcrossComments
+BraceWrapping:
+    AfterCaseLabel: true
+    AfterUnion: true
+    BeforeLambdaBody: true
+LineEnding: LF

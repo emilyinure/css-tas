@@ -1,0 +1,11 @@
+# CMake.
+/**/CMakeLists.txt linguist-generated
+
+# Default behaviour.
+* text=auto
+
+# LF for source code.
+/tas/** text eol=lf
+
+# Ensure languages for github.
+/tas/** linguist-language=C++
