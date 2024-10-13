@@ -1,1 +1,6 @@
-build
+*
+!tas
+!.gitignore
+!.gitattributes
+!.clang-format
+!CMakeLists.txt

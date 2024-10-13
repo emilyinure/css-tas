@@ -194,44 +194,44 @@ float max_ground_accel_to_direction(float yaw, vector3_t velocity, float& forwar
       math::radian_to_degrees(math::normalize_rad(vel_yaw_rad - buttons_phi + theta)));
 }
 
-void setup_move_data_strafe_accel(move_data_t* move_data, input_data_t* input) {
-
-  vector3_t        velocity      = move_data->velocity;
-  static convar_t* sv_accelerate = cheat::interfaces.console->find_var("sv_accelerate");
-  static convar_t* sv_stopspeed  = cheat::interfaces.console->find_var("sv_stopspeed");
-  static convar_t* sv_friction   = cheat::interfaces.console->find_var("sv_friction");
-
-  velocity.z       = 0;
-  auto speed       = glm::length(velocity);
-  auto vel_yaw_rad = glm::atan(velocity.y, velocity.x);
-
-  float wishspeed = glm::min(cheat::local_player->max_speed(),
-                             400.0f); // this can change, if a style has higher
-                                      // max speed we'll implement
-
-  double theta = 0.f;
-
-  double const_speed_theta = movement_t::const_speed_theta(speed, wishspeed, on_ground);
-  if (percent > 0.f) {
-    double accel_theta = movement_t::max_accel_theta(speed, wishspeed, on_ground);
-    theta = math::normalize_rad(((accel_theta - const_speed_theta) * glm::abs(percent)) +
-                                const_speed_theta);
-  } else {
-    double deccel_theta = movement_t::max_deccel_theta(speed, wishspeed, on_ground);
-    theta = math::normalize_rad(((deccel_theta - const_speed_theta) * glm::abs(percent)) +
-                                const_speed_theta);
-  }
-
-  if (speed < 0.1f) {
-    move_data->side_move    = 0.f;
-    move_data->forward_move = 400.f;
-    return;
-  }
-
-  double buttons_phi = -glm::atan(move_data->side_move, move_data->forward_move);
-  return math::normalize_angle(
-      math::radian_to_degrees(math::normalize_rad(vel_yaw_rad - buttons_phi + theta)));
-}
+// float setup_move_data_strafe_accel(move_data_t* move_data, input_data_t* input) {
+//
+//   vector3_t        velocity      = move_data->velocity;
+//   static convar_t* sv_accelerate = cheat::interfaces.console->find_var("sv_accelerate");
+//   static convar_t* sv_stopspeed  = cheat::interfaces.console->find_var("sv_stopspeed");
+//   static convar_t* sv_friction   = cheat::interfaces.console->find_var("sv_friction");
+//
+//   velocity.z       = 0;
+//   auto speed       = glm::length(velocity);
+//   auto vel_yaw_rad = glm::atan(velocity.y, velocity.x);
+//
+//   float wishspeed = glm::min(cheat::local_player->max_speed(),
+//                              400.0f); // this can change, if a style has higher
+//                                       // max speed we'll implement
+//
+//   double theta = 0.f;
+//
+//   double const_speed_theta = movement_t::const_speed_theta(speed, wishspeed, on_ground);
+//   if (percent > 0.f) {
+//     double accel_theta = movement_t::max_accel_theta(speed, wishspeed, on_ground);
+//     theta = math::normalize_rad(((accel_theta - const_speed_theta) * glm::abs(percent)) +
+//                                 const_speed_theta);
+//   } else {
+//     double deccel_theta = movement_t::max_deccel_theta(speed, wishspeed, on_ground);
+//     theta = math::normalize_rad(((deccel_theta - const_speed_theta) * glm::abs(percent)) +
+//                                 const_speed_theta);
+//   }
+//
+//   if (speed < 0.1f) {
+//     move_data->side_move    = 0.f;
+//     move_data->forward_move = 400.f;
+//     return;
+//   }
+//
+//   double buttons_phi = -glm::atan(move_data->side_move, move_data->forward_move);
+//   return math::normalize_angle(
+//       math::radian_to_degrees(math::normalize_rad(vel_yaw_rad - buttons_phi + theta)));
+// }
 
 void tas_t::setup_move_data_input(move_data_t* move_data, input_data_t* input) {
   move_data->forward_move = input->forward_move;
@@ -392,21 +392,6 @@ void generate_input_strafe_side(input_data_t& input_data, segment_t* segment) {
   }
 }
 
-void generate_input_strafe_side(input_data_t& input_data, segment_t* segment) {
-  input_data.yaw_change_type = yaw_type::relative;
-  input_data.yaw             = segment->strafe_side_data.turn_rate;
-  switch (segment->direction) {
-    case left:
-      input_data.side_move = -400.f;
-      break;
-
-    case right:
-      input_data.side_move = 400.f;
-      input_data.yaw *= -1.f;
-      break;
-  }
-}
-
 void generate_input_strafe_accel(input_data_t& input_data, segment_t* segment) {
   input_data.yaw_change_type  = yaw_type::relative_accel;
   input_data.accel_percentage = segment->strafe_accel_data.accel_percentage * 0.01f;
@@ -423,12 +408,12 @@ void generate_input_strafe_accel(input_data_t& input_data, segment_t* segment) {
   }
 }
 
-void generate_input_pre_strafe(input_data& input_data, segment_t* segment) {
+void generate_input_pre_strafe(input_data_t& input_data, segment_t* segment) {
   input_data.yaw_change_type = yaw_type::pre_strafe;
   input_data.direction       = segment->direction;
 }
 
-void generate_input_manual(input_data& input_data, segment_t* segment) {
+void generate_input_manual(input_data_t& input_data, segment_t* segment) {
   input_data.yaw_change_type = yaw_type::set;
   input_data.yaw             = segment->yaw;
   input_data.pitch           = segment->manual_data.pitch;
